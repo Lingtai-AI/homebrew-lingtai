@@ -4,6 +4,9 @@ class LingtaiTui < Formula
   version "0.3.1"
   license "MIT"
 
+  depends_on "uv"
+  depends_on "python@3.13"
+
   on_macos do
     on_arm do
       url "https://github.com/huangzesen/lingtai/releases/download/v0.3.1/lingtai-darwin-arm64"
