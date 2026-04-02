@@ -1,37 +1,36 @@
 class LingtaiTui < Formula
   desc "Terminal UI for the Lingtai AI agent framework"
   homepage "https://github.com/huangzesen/lingtai"
-  version "0.4.19"
+  version "0.4.22"
   license "MIT"
 
-  depends_on "uv"
-  depends_on "python@3.13"
+  depends_on "uv" => :recommended
+  depends_on "python@3.13" => :recommended
 
   on_macos do
     on_arm do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-darwin-arm64.tar.gz"
-      sha256 "7d3926b80a82e4f964dd3006e5c50baafc17eaf3cc9b84eafea63454e357c6ce"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.22/lingtai-darwin-arm64"
+      sha256 "f23ff5e367089bd4b3eaa9fd282e0e69218a5ab5a1b87dacbf5be174450c0b9b"
     end
     on_intel do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-darwin-x64.tar.gz"
-      sha256 "a29d56bb4778d81c177b61b934f73cbbe6e9a52c54e971ad4cd1b10d3f6e4e35"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.22/lingtai-darwin-x64"
+      sha256 "ea1336842ef09746b027919f75030d1e3fd550059e2e72f308c7a4b07f093113"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-linux-arm64.tar.gz"
-      sha256 "5e0d755f6f7d90279fc1a8a59083520855541440ef4baabb0564060d305f716e"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.22/lingtai-linux-arm64"
+      sha256 "1f6bad81486a4b9230e4980811ba3241534b2e1dfc6c7f1cfae25b8bca908e77"
     end
     on_intel do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-linux-x64.tar.gz"
-      sha256 "39d34544da411f59fa387bad59b50ed0fa030f559e1c7202070fdd299795196b"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.22/lingtai-linux-x64"
+      sha256 "8009ca3b9e736e0bfe33e753a21ce40c8a0d38f2d8c89ab6c72e4e6bc33c0a7a"
     end
   end
 
   def install
-    bin.install "lingtai-tui"
-    bin.install "lingtai-portal"
+    bin.install stable.url.split("/").last => "lingtai-tui"
   end
 
   test do
