@@ -4,34 +4,34 @@ class LingtaiTui < Formula
   version "0.4.19"
   license "MIT"
 
-  depends_on "huangzesen/lingtai/lingtai-portal"
   depends_on "uv"
   depends_on "python@3.13"
 
   on_macos do
     on_arm do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-darwin-arm64"
-      sha256 "29001358e1e203c44fdd40193620ca7fbe992c7800bb65b9b4caf4a7c5183313"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-darwin-arm64.tar.gz"
+      sha256 "7fb63f0a0d48e84fa1f621d147a259f220132d78c8078ccc02618eb778fc9dca"
     end
     on_intel do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-darwin-x64"
-      sha256 "5ea9c17261912826a6ddd8e6ef9853e2517f53593d5012029467287cc0cbd8d0"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-darwin-x64.tar.gz"
+      sha256 "44ec227bf78c85cdf58d8285f93f4b8874955a22bdc28e732b9247c81c476903"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-linux-arm64"
-      sha256 "bb0d29d832e9e7d6f2ed1a334ba60b6bb4fe4f33e8ff898a07ef87e5b7310701"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-linux-arm64.tar.gz"
+      sha256 "3abaae2c2b8e8e7cc9379d3222da34b58dd679357a7f7cf9bd9b5cdf339eb95a"
     end
     on_intel do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-linux-x64"
-      sha256 "5cf8631fdd33b9c04207fb448801f08f72e0e95572abaf5d8d334f6268a1f490"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.19/lingtai-linux-x64.tar.gz"
+      sha256 "8761fcab3a80572fc5cf93b5194e1cf75d9c9c4f111c143ed4872ac735bc2e2d"
     end
   end
 
   def install
-    bin.install stable.url.split("/").last => "lingtai-tui"
+    bin.install "lingtai-tui"
+    bin.install "lingtai-portal"
   end
 
   test do
