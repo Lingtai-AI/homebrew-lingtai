@@ -4,6 +4,7 @@ class LingtaiTui < Formula
   version "0.4.19"
   license "MIT"
 
+  depends_on "huangzesen/lingtai/lingtai-portal"
   depends_on "uv"
   depends_on "python@3.13"
 
