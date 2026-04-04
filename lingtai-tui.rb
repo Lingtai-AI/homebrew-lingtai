@@ -1,7 +1,7 @@
 class LingtaiTui < Formula
   desc "Terminal UI for the Lingtai AI agent framework"
   homepage "https://github.com/huangzesen/lingtai"
-  version "0.4.24"
+  version "0.4.25"
   license "MIT"
 
   depends_on "uv" => :recommended
@@ -9,28 +9,29 @@ class LingtaiTui < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.24/lingtai-darwin-arm64"
-      sha256 "99892d0863db7b053b3e9c02420f1418674bcc3d2f470205f8c74f5859fd7910"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.25/lingtai-darwin-arm64.tar.gz"
+      sha256 "2fdbf6c63ed4c1a3683909071a3cbc234db166d3c51a666a87824c53c3901b06"
     end
     on_intel do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.24/lingtai-darwin-x64"
-      sha256 "f9abbe34a47358790b50eaf01913f1dc1e309256359e67885e5e751a346079ce"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.25/lingtai-darwin-x64.tar.gz"
+      sha256 "14e73d1d306446267bd0bd6dc75128b45345524093ef2835d5941f956023fad6"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.24/lingtai-linux-arm64"
-      sha256 "79fb5878cf0ef7c88f3da8e4d1f0da1e1f3408420ea9cef1d6eac8dcbcd6789c"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.25/lingtai-linux-arm64.tar.gz"
+      sha256 "21273e249423f92f0408affdd5bca73e597a1c1e75a5d1025cbc65309af35965"
     end
     on_intel do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.24/lingtai-linux-x64"
-      sha256 "c36dd603c9544a4c7bfae477cfed36b1011cf33cee4bdcb9792d9f667c6210dd"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.25/lingtai-linux-x64.tar.gz"
+      sha256 "37c6d12cc7ebbdb8ea2acd3be6f5b47ba8ac1c80808e89703888357b7861e59f"
     end
   end
 
   def install
-    bin.install stable.url.split("/").last => "lingtai-tui"
+    bin.install "lingtai-tui"
+    bin.install "lingtai-portal"
   end
 
   test do
