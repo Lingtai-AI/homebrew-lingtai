@@ -10,22 +10,22 @@ class LingtaiTui < Formula
   on_macos do
     on_arm do
       url "https://github.com/huangzesen/lingtai/releases/download/v0.4.30/lingtai-darwin-arm64.tar.gz"
-      sha256 "338a8d0c4e9f63095129e8b55023b7c49fb5eaf41107ccb94ab865accea08dcf"
+      sha256 "f4e33189a90f6a5b62d71a6b1cb32fc685ce946fa6242b6dd450a501204ff614"
     end
     on_intel do
       url "https://github.com/huangzesen/lingtai/releases/download/v0.4.30/lingtai-darwin-x64.tar.gz"
-      sha256 "fa7592ec88087e828db946fe7e5f037d3e1e89b9376dc7a0aa1e611ab0f09393"
+      sha256 "97313b567a19c1e45adcc83058bfe77654c1783aa4f0994996cfee467ce4e4d6"
     end
   end
 
   on_linux do
     on_arm do
       url "https://github.com/huangzesen/lingtai/releases/download/v0.4.30/lingtai-linux-arm64.tar.gz"
-      sha256 "83f8d9c592d447d72be9abee63ec791627fb3d995fb8b5c57abd9394949233d5"
+      sha256 "0290d226f431ddd39e6e54a1e56ae322f4da1f19c7a1dc0bb14c9aa9ac9f9d0f"
     end
     on_intel do
       url "https://github.com/huangzesen/lingtai/releases/download/v0.4.30/lingtai-linux-x64.tar.gz"
-      sha256 "730867dee42fbb613356eae9fbf778bcf6161896b4573928b3237b27693da5fa"
+      sha256 "167d559b0fd2552e116ac320ed7840e2f4610c12a0b734c09cc60dce3b50c628"
     end
   end
 
