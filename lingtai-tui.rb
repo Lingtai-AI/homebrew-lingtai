@@ -1,7 +1,7 @@
 class LingtaiTui < Formula
   desc "Terminal UI for the Lingtai AI agent framework"
   homepage "https://github.com/huangzesen/lingtai"
-  version "0.4.34"
+  version "0.4.35"
   license "MIT"
 
   depends_on "uv" => :recommended
@@ -9,23 +9,23 @@ class LingtaiTui < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.34/lingtai-darwin-arm64.tar.gz"
-      sha256 "383d3bec52a161d449c7805f9d770ac1c0ababb362382a61fa30cb8417b24bb5"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.35/lingtai-darwin-arm64.tar.gz"
+      sha256 "451b7294d63ef392beeedac9c21ef98c1509811f0504bdc5f4e3568ee4576467"
     end
     on_intel do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.34/lingtai-darwin-x64.tar.gz"
-      sha256 "3b6128ddda31e120f6142227fc5b668beb1d5c5cc856c41ebdc589b23c5143f0"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.35/lingtai-darwin-x64.tar.gz"
+      sha256 "9b57990674c9a36c28e7c05f15ff3799b516c8ce414e3109ad884fcdd55baa49"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.34/lingtai-linux-arm64.tar.gz"
-      sha256 "79943ba185cd382d55362aa55fa47ac9db3219421080a662acbe3dcb6be9523c"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.35/lingtai-linux-arm64.tar.gz"
+      sha256 "1a3d54b1e8af75252db0cc8570571b26f708d4a61a2e7796daa3011390f288c4"
     end
     on_intel do
-      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.34/lingtai-linux-x64.tar.gz"
-      sha256 "679e2c53eb8d531ede247e5cc9775ad09d31cbc7aa5be944f2e6f7a22a5edb04"
+      url "https://github.com/huangzesen/lingtai/releases/download/v0.4.35/lingtai-linux-x64.tar.gz"
+      sha256 "5a09b44e7912c9219371aaa0b8afeff1a91c93e4db1b5d70bfc1a43a67d47bda"
     end
   end
 
