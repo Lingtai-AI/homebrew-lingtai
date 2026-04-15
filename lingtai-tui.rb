@@ -1,11 +1,11 @@
 class LingtaiTui < Formula
   desc "Terminal UI for the Lingtai AI agent framework"
   homepage "https://github.com/huangzesen/lingtai"
-  version "0.5.0"
+  version "0.5.1"
   license "MIT"
 
-  url "https://github.com/huangzesen/lingtai/archive/refs/tags/v0.5.0.tar.gz"
-  sha256 "d06442a4229c64fa7f7b3876eb8aff59160713758cda6189e496bfec1f386607"
+  url "https://github.com/huangzesen/lingtai/archive/refs/tags/v0.5.1.tar.gz"
+  sha256 "a46c20edf3ceff2f0147b3c9fe9b157f45ea91087cedce1c48520fd2f5dc10ef"
 
   depends_on "go" => :build
   depends_on "node" => :build
