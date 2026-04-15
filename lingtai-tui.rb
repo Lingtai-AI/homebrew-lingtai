@@ -13,6 +13,22 @@ class LingtaiTui < Formula
   depends_on "python@3.13" => :recommended
 
   def install
+    # Auto-detect whether proxy.golang.org is reachable. If not (typical on
+    # mainland China networks), fall back to CN-accessible mirrors for both
+    # Go modules and npm packages. Users elsewhere see no difference — the
+    # probe succeeds in <1s and ENV is left untouched.
+    proxy_reachable = quiet_system(
+      "curl", "-sSf", "--max-time", "3", "-o", "/dev/null",
+      "https://proxy.golang.org"
+    )
+
+    unless proxy_reachable
+      opoo "proxy.golang.org unreachable; using China-friendly build mirrors."
+      ENV["GOPROXY"]             = "https://goproxy.cn,direct"
+      ENV["GOSUMDB"]             = "sum.golang.google.cn"
+      ENV["NPM_CONFIG_REGISTRY"] = "https://registry.npmmirror.com"
+    end
+
     cd "tui" do
       ldflags = "-X main.version=#{version}"
       system "go", "build", *std_go_args(ldflags: ldflags), "-o", bin/"lingtai-tui", "."
