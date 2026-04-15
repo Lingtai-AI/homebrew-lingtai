@@ -13,20 +13,28 @@ class LingtaiTui < Formula
   depends_on "python@3.13" => :recommended
 
   def install
-    # Auto-detect whether proxy.golang.org is reachable. If not (typical on
-    # mainland China networks), fall back to CN-accessible mirrors for both
-    # Go modules and npm packages. Users elsewhere see no difference — the
-    # probe succeeds in <1s and ENV is left untouched.
-    proxy_reachable = quiet_system(
-      "curl", "-sSf", "--max-time", "3", "-o", "/dev/null",
-      "https://proxy.golang.org"
-    )
-
-    unless proxy_reachable
-      opoo "proxy.golang.org unreachable; using China-friendly build mirrors."
-      ENV["GOPROXY"]             = "https://goproxy.cn,direct"
-      ENV["GOSUMDB"]             = "sum.golang.google.cn"
-      ENV["NPM_CONFIG_REGISTRY"] = "https://registry.npmmirror.com"
+    # Network mirror selection, in priority order:
+    #   1. HOMEBREW_GOPROXY (explicit user override) — community convention,
+    #      survives Homebrew's superenv scrub because of the HOMEBREW_ prefix.
+    #   2. Auto-detect: probe a stable proxy.golang.org API endpoint with a
+    #      3s timeout. If unreachable (typical on mainland China networks),
+    #      fall back to CN-accessible mirrors for Go modules, the Go checksum
+    #      database (sum.golang.google.cn is Google's own CN-reachable alias
+    #      of sum.golang.org, required for CN builds to succeed), and npm.
+    #   3. Otherwise: leave ENV untouched — users elsewhere see no difference.
+    if ENV["HOMEBREW_GOPROXY"]
+      ENV["GOPROXY"] = ENV["HOMEBREW_GOPROXY"]
+    else
+      proxy_reachable = quiet_system(
+        "curl", "-sSfL", "--max-time", "3", "-o", "/dev/null",
+        "https://proxy.golang.org/github.com/golang/go/@latest"
+      )
+      unless proxy_reachable
+        opoo "proxy.golang.org unreachable; using China-friendly build mirrors."
+        ENV["GOPROXY"]             = "https://goproxy.cn,direct"
+        ENV["GOSUMDB"]             = "sum.golang.google.cn"
+        ENV["NPM_CONFIG_REGISTRY"] = "https://registry.npmmirror.com"
+      end
     end
 
     cd "tui" do
