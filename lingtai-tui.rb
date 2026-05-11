@@ -1,11 +1,11 @@
 class LingtaiTui < Formula
   desc "Terminal UI for the Lingtai AI agent framework"
   homepage "https://github.com/Lingtai-AI/lingtai"
-  version "0.7.9"
+  version "0.8.0"
   license "MIT"
 
-  url "https://github.com/Lingtai-AI/lingtai/archive/refs/tags/v0.7.9.tar.gz"
-  sha256 "54520d552b844800691489301648a4ac1ee78913eba78f796920b2e29d5bcab1"
+  url "https://github.com/Lingtai-AI/lingtai/archive/refs/tags/v0.8.0.tar.gz"
+  sha256 "5aa7b7ca74709e899fc5e66a1e95dd13441e2829b2224e6b5fa7d04f2d3caa05"
 
   depends_on "go" => :build
   depends_on "node" => :build
@@ -40,6 +40,11 @@ class LingtaiTui < Formula
     cd "tui" do
       ldflags = "-X main.version=#{version}"
       system "go", "build", *std_go_args(ldflags: ldflags), "-o", bin/"lingtai-tui", "."
+      # Create 'lingtai' alias for backward compatibility
+      # Only if 'lingtai' doesn't exist or is already a symlink to lingtai-tui
+      unless (bin/"lingtai").exist? && (!(bin/"lingtai").symlink? || (bin/"lingtai").readlink.to_s != "lingtai-tui")
+        bin.install_symlink "lingtai-tui" => "lingtai"
+      end
     end
 
     cd "portal" do
@@ -54,5 +59,6 @@ class LingtaiTui < Formula
 
   test do
     assert_match "lingtai-tui", shell_output("#{bin}/lingtai-tui version 2>&1", 0)
+    assert_match "lingtai-tui", shell_output("#{bin}/lingtai version 2>&1", 0)
   end
 end
