@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LingTai Homebrew Tap — Pin Node LTS for Linuxbrew Builds</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55;margin:0;background:#f7f7fb;color:#18181b}main{max-width:900px;margin:0 auto;padding:40px 22px}.card{background:#fff;border:1px solid #e4e4e7;border-radius:18px;padding:26px;margin:18px 0;box-shadow:0 8px 28px rgba(15,23,42,.06)}h1{font-size:30px;margin:0 0 8px}h2{font-size:20px;margin-top:0}code{background:#f4f4f5;border-radius:6px;padding:2px 5px}ul{padding-left:22px}.ok{color:#15803d}.warn{color:#b45309}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;white-space:pre-wrap;background:#18181b;color:#f4f4f5;padding:14px;border-radius:12px;overflow:auto}</style>
+</head>
+<body><main>
+<h1>Pin Node LTS for LingTai Homebrew/Linuxbrew Builds</h1>
+<p>This tap fix changes the build-time Node dependency from moving latest <code>node</code> to current LTS <code>node@22</code>.</p>
+<section class="card"><h2>Why</h2>
+<p>Jason's Linuxbrew upgrade from <code>lingtai-tui 0.8.14</code> to <code>0.8.15</code> failed while the formula ran <code>portal/web/npm ci</code>. The failing binary was Linuxbrew's latest <code>node 26.3.0</code>, which required newer host ABI symbols than the target machine provided:</p>
+<div class="mono">GLIBC_2.38
+GLIBCXX_3.4.31 / GLIBCXX_3.4.32
+GCC_13.0.0</div>
+<p>The formula's source-build flow is fine; the problem is depending on Homebrew's moving latest Node line for that source build.</p></section>
+<section class="card"><h2>What changed</h2>
+<ul>
+<li><code>depends_on "node" =&gt; :build</code> becomes <code>depends_on "node@22" =&gt; :build</code>.</li>
+<li>The formula prepends <code>Formula["node@22"].opt_bin</code> to <code>PATH</code> during install so <code>npm</code>/<code>node</code> come from the pinned LTS keg even if latest Node is installed.</li>
+<li>The portal frontend still builds locally with <code>npm ci &amp;&amp; npm run build</code>.</li>
+</ul></section>
+<section class="card"><h2>Evidence</h2>
+<ul>
+<li><code>node@22</code> is not deprecated and is the current LTS formula; Homebrew metadata shows deprecation date <code>2026-10-28</code>.</li>
+<li><code>node@20</code> is already deprecated, so it is less suitable as the default.</li>
+<li>Inspection of the x86_64 Linux <code>node@22</code> bottle found required symbols up to <code>GLIBC_2.34</code> / <code>GLIBCXX_3.4.30</code>, lower than the failing <code>node 26</code> requirement reported by Linuxbrew.</li>
+</ul></section>
+<section class="card"><h2>Validation</h2>
+<ul>
+<li class="ok">Ruby syntax check for <code>lingtai-tui.rb</code>.</li>
+<li class="ok">Formula diff reviewed manually.</li>
+<li class="warn">Full Linuxbrew validation still requires retrying on the affected Linux host after the tap PR/commit is available.</li>
+</ul></section>
+</main></body></html>

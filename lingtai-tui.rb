@@ -8,11 +8,17 @@ class LingtaiTui < Formula
   sha256 "174d6e489792319ad54af4554e468edc715aa183fda2511f5b4f97d61df357f6"
 
   depends_on "go" => :build
-  depends_on "node" => :build
+  depends_on "node@22" => :build
   depends_on "uv" => :recommended
   depends_on "python@3.13" => :recommended
 
   def install
+    # Use the current Node LTS instead of Homebrew's moving latest `node`.
+    # Linuxbrew `node` 26 bottles require newer glibc/libstdc++ than common
+    # stable Linux hosts provide; `node@22` keeps source builds on a supported
+    # LTS line while preserving the portal/web npm build.
+    ENV.prepend_path "PATH", Formula["node@22"].opt_bin
+
     # Network mirror selection, in priority order:
     #   1. HOMEBREW_GOPROXY (explicit user override) — community convention,
     #      survives Homebrew's superenv scrub because of the HOMEBREW_ prefix.
