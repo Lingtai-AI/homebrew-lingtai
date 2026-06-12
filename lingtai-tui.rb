@@ -1,24 +1,18 @@
 class LingtaiTui < Formula
   desc "Terminal UI for the Lingtai AI agent framework"
   homepage "https://github.com/Lingtai-AI/lingtai"
-  version "0.8.15"
+  version "0.8.16"
   license "MIT"
 
-  url "https://github.com/Lingtai-AI/lingtai/archive/refs/tags/v0.8.15.tar.gz"
-  sha256 "174d6e489792319ad54af4554e468edc715aa183fda2511f5b4f97d61df357f6"
+  url "https://github.com/Lingtai-AI/lingtai/archive/refs/tags/v0.8.16.tar.gz"
+  sha256 "f575160398c16c41fc6a5344ec27a214ac09d9c7f9abe536767d7ae45b9fd139"
 
   depends_on "go" => :build
-  depends_on "node@22" => :build
+  depends_on "node" => :build
   depends_on "uv" => :recommended
   depends_on "python@3.13" => :recommended
 
   def install
-    # Use the current Node LTS instead of Homebrew's moving latest `node`.
-    # Linuxbrew `node` 26 bottles require newer glibc/libstdc++ than common
-    # stable Linux hosts provide; `node@22` keeps source builds on a supported
-    # LTS line while preserving the portal/web npm build.
-    ENV.prepend_path "PATH", Formula["node@22"].opt_bin
-
     # Network mirror selection, in priority order:
     #   1. HOMEBREW_GOPROXY (explicit user override) — community convention,
     #      survives Homebrew's superenv scrub because of the HOMEBREW_ prefix.
