@@ -1,11 +1,11 @@
 class LingtaiTui < Formula
   desc "Terminal UI for the Lingtai AI agent framework"
   homepage "https://github.com/Lingtai-AI/lingtai"
-  version "0.9.1"
+  version "0.9.2"
   license "MIT"
 
-  url "https://github.com/Lingtai-AI/lingtai/archive/refs/tags/v0.9.1.tar.gz"
-  sha256 "b78927bea68531d6ed76a74f50f426bc660c6074506cc2c9950cbb1ae48e6969"
+  url "https://github.com/Lingtai-AI/lingtai/archive/refs/tags/v0.9.2.tar.gz"
+  sha256 "c745db22b039ce3093c044be742067b8f018be7615b5be121c9c23dff5faa4ef"
 
   depends_on "go" => :build
   depends_on "node" => :build
@@ -13,7 +13,11 @@ class LingtaiTui < Formula
   depends_on "python@3.13" => :recommended
 
   def install
-    # Go module mirror selection, in priority order:
+    # Network mirror selection. Go-module mirrors and the npm registry are
+    # configured independently — a Go proxy outage must not force an npm
+    # registry switch (and vice versa).
+    #
+    # Go modules:
     #   1. HOMEBREW_GOPROXY (explicit user override) — community convention,
     #      survives Homebrew's superenv scrub because of the HOMEBREW_ prefix.
     #   2. Auto-detect: probe a stable proxy.golang.org API endpoint with a
@@ -22,40 +26,42 @@ class LingtaiTui < Formula
     #      checksum database (sum.golang.google.cn is Google's own
     #      CN-reachable alias of sum.golang.org, required for CN builds).
     #   3. Otherwise: leave ENV untouched — users elsewhere see no difference.
-    proxy_reachable = true
+    #
+    # npm registry:
+    #   1. HOMEBREW_NPM_CONFIG_REGISTRY (explicit user override) — same
+    #      HOMEBREW_ prefix trick so it survives the superenv scrub.
+    #   2. Auto-detect ONLY when the Go proxy was unreachable AND an npm
+    #      client probe to registry.npmmirror.com succeeds. Use npm (not curl)
+    #      so the probe exercises the same Node/npm TLS trust store that
+    #       will use; otherwise leave the npm registry on its default.
+    #   3. Otherwise: leave ENV untouched.
     if ENV["HOMEBREW_GOPROXY"]
       ENV["GOPROXY"] = ENV["HOMEBREW_GOPROXY"]
+      go_proxy_reachable = true
     else
-      proxy_reachable = quiet_system(
+      go_proxy_reachable = quiet_system(
         "curl", "-sSfL", "--max-time", "3", "-o", "/dev/null",
         "https://proxy.golang.org/github.com/golang/go/@latest"
       )
-      unless proxy_reachable
-        opoo "proxy.golang.org unreachable; using China-friendly Go mirrors."
+      unless go_proxy_reachable
+        opoo "proxy.golang.org unreachable; using China-friendly Go build mirrors."
         ENV["GOPROXY"] = "https://goproxy.cn,direct"
         ENV["GOSUMDB"] = "sum.golang.google.cn"
       end
     end
 
-    # npm registry selection — kept independent of the Go proxy probe, since a
-    # mirror that is reachable is not necessarily TLS-trustworthy in the build
-    # environment (e.g. UNABLE_TO_GET_ISSUER_CERT_LOCALLY against npmmirror).
-    #   1. HOMEBREW_NPM_CONFIG_REGISTRY (explicit user override).
-    #   2. Auto-use registry.npmmirror.com only if an npm client probe succeeds;
-    #      this exercises the same Node/npm TLS trust store that `npm ci` will
-    #      use. Otherwise warn and leave npm's registry unchanged.
     if ENV["HOMEBREW_NPM_CONFIG_REGISTRY"]
       ENV["NPM_CONFIG_REGISTRY"] = ENV["HOMEBREW_NPM_CONFIG_REGISTRY"]
-    elsif !proxy_reachable
-      npmmirror_ok = quiet_system(
+    elsif !go_proxy_reachable
+      npmmirror_reachable = quiet_system(
         "npm", "ping", "--registry=https://registry.npmmirror.com",
         "--fetch-timeout=3000", "--fetch-retries=0"
       )
-      if npmmirror_ok
-        opoo "Using China-friendly npm mirror registry.npmmirror.com."
+      if npmmirror_reachable
+        opoo "Using China-friendly npm registry (registry.npmmirror.com)."
         ENV["NPM_CONFIG_REGISTRY"] = "https://registry.npmmirror.com"
       else
-        opoo "registry.npmmirror.com failed npm's connectivity/TLS probe; leaving npm registry unchanged."
+        opoo "registry.npmmirror.com failed npm's connectivity/TLS probe; leaving npm registry unchanged. Set HOMEBREW_NPM_CONFIG_REGISTRY to override."
       end
     end
 
