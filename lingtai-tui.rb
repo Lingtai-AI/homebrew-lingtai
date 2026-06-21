@@ -1,16 +1,14 @@
 class LingtaiTui < Formula
   desc "Terminal UI for the Lingtai AI agent framework"
   homepage "https://github.com/Lingtai-AI/lingtai"
-  version "0.9.3"
-  license "MIT"
-
   url "https://github.com/Lingtai-AI/lingtai/archive/refs/tags/v0.9.3.tar.gz"
   sha256 "2fd8a3b0ded300806ca7dc5b672bc2a23f73f0abddad020495e92177ad36958e"
+  license "MIT"
 
   depends_on "go" => :build
   depends_on "node" => :build
-  depends_on "uv" => :recommended
   depends_on "python@3.13" => :recommended
+  depends_on "uv" => :recommended
 
   def install
     # Network mirror selection. Go-module mirrors and the npm registry are
@@ -40,7 +38,7 @@ class LingtaiTui < Formula
       go_proxy_reachable = true
     else
       go_proxy_reachable = quiet_system(
-        "curl", "-sSfL", "--max-time", "3", "-o", "/dev/null",
+        "curl", "-sSfL", "--max-time", "3", "-o", File::NULL,
         "https://proxy.golang.org/github.com/golang/go/@latest"
       )
       unless go_proxy_reachable
@@ -61,7 +59,8 @@ class LingtaiTui < Formula
         opoo "Using China-friendly npm registry (registry.npmmirror.com)."
         ENV["NPM_CONFIG_REGISTRY"] = "https://registry.npmmirror.com"
       else
-        opoo "registry.npmmirror.com failed npm's connectivity/TLS probe; leaving npm registry unchanged. Set HOMEBREW_NPM_CONFIG_REGISTRY to override."
+        opoo "registry.npmmirror.com failed npm's connectivity/TLS probe; " \
+             "leaving npm registry unchanged. Set HOMEBREW_NPM_CONFIG_REGISTRY to override."
       end
     end
 
@@ -81,6 +80,6 @@ class LingtaiTui < Formula
   end
 
   test do
-    assert_match "lingtai-tui", shell_output("#{bin}/lingtai-tui version 2>&1", 0)
+    assert_match "lingtai-tui", shell_output("#{bin}/lingtai-tui version 2>&1")
   end
 end
