@@ -1,11 +1,11 @@
 class LingtaiTui < Formula
   desc "Terminal UI for the Lingtai AI agent framework"
   homepage "https://github.com/Lingtai-AI/lingtai"
-  version "0.12.0"
+  version "1.0.0"
   license "Apache-2.0"
 
-  url "https://github.com/Lingtai-AI/lingtai/archive/refs/tags/v0.12.0.tar.gz"
-  sha256 "02d54367967522f5060d2291f5311f071568d85fa0dcd088dab943cc6ba6500f"
+  url "https://github.com/Lingtai-AI/lingtai/archive/refs/tags/v1.0.0.tar.gz"
+  sha256 "25b6751f9a48b34a929f714e80d833d21c29face7f29d118ca06c47681cc5f91"
 
   depends_on "go" => :build
   depends_on "node" => :build
@@ -33,7 +33,7 @@ class LingtaiTui < Formula
     #   2. Auto-detect ONLY when the Go proxy was unreachable AND an npm
     #      client probe to registry.npmmirror.com succeeds. Use npm (not curl)
     #      so the probe exercises the same Node/npm TLS trust store that
-    #       will use; otherwise leave the npm registry on its default.
+    #      `npm ci` will use; otherwise leave the npm registry on its default.
     #   3. Otherwise: leave ENV untouched.
     if ENV["HOMEBREW_GOPROXY"]
       ENV["GOPROXY"] = ENV["HOMEBREW_GOPROXY"]
